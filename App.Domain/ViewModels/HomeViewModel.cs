@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using hey_url_challenge_code_dotnet.Models;
+using App.Domain.Models;
 
-namespace hey_url_challenge_code_dotnet.ViewModels
+namespace App.Domain.ViewModels
 {
     public class HomeViewModel
     {

@@ -1,4 +1,4 @@
-using HeyUrlChallengeCodeDotnet.Data;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ namespace HeyUrlChallengeCodeDotnet
         {
             services.AddBrowserDetection();
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationContext>(options => options.UseInMemoryDatabase(databaseName: "HeyUrl"));
+            //services.AddDbContext<ApplicationContext>(options => options.UseInMemoryDatabase(databaseName: "HeyUrl"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,9 +52,9 @@ namespace HeyUrlChallengeCodeDotnet
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            using var scope = app.ApplicationServices.CreateScope();
-            var context = scope.ServiceProvider.GetService<ApplicationContext>();
-            context.Database.EnsureCreated();
+            //using var scope = app.ApplicationServices.CreateScope();
+            //var context = scope.ServiceProvider.GetService<ApplicationContext>();
+            //context.Database.EnsureCreated();
         }
     }
 }

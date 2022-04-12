@@ -1,4 +1,4 @@
-namespace HeyUrlChallengeCodeDotnet.Models
+namespace App.Domain.ViewModels
 {
     public class ErrorViewModel
     {

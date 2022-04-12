@@ -1,5 +1,5 @@
 ﻿using System;
-namespace hey_url_challenge_code_dotnet.Models
+namespace App.Domain.Models
 {
     public class Url
     {
