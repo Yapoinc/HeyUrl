@@ -12,4 +12,6 @@ namespace App.Domain.Models
         public int Count { get; set; }
         public List<UrlMetric> UrlMetrics { get; set; }
     }
+
+
 }
