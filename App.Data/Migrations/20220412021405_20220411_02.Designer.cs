@@ -4,14 +4,16 @@ using App.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220412021405_20220411_02")]
+    partial class _20220411_02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,26 +126,6 @@ namespace App.Data.Migrations
                     b.HasIndex("UrlId");
 
                     b.ToTable("UrlMetric");
-                });
-
-            modelBuilder.Entity("App.Domain.Models.UrlView", b =>
-                {
-                    b.Property<int>("Clicks")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OriginalUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToView("UrlView");
                 });
 
             modelBuilder.Entity("App.Domain.Models.UrlMetric", b =>

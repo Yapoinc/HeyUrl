@@ -10,6 +10,7 @@ namespace App.Data
         public DbSet<Browser> Browsers { get; set; }
         public DbSet<Plataform> Plataforms { get; set; }
         public DbSet<UrlMetric> UrlMetrics { get; set; }
+        public DbSet<UrlView> UrlView { get; set; }
         public AppDbContext(DbContextOptions options):base(options)
         {
 

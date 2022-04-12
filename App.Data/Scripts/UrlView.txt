@@ -1,0 +1,16 @@
+﻿CREATE OR ALTER VIEW dbo.UrlView AS 
+								WITH urlGroup AS (
+									SELECT 
+									m.UrlId,
+									COUNT(*) Clicks
+									FROM URLMETRIC m
+									GROUP BY m.UrlId
+									)
+								SELECT 
+									u.Id,
+									u.ShortUrl, 
+									u.OriginalUrl,
+									u.DateCreated,
+									ug.Clicks
+								FROM Url u 
+								INNER JOIN urlGroup ug ON ug.UrlId=u.Id

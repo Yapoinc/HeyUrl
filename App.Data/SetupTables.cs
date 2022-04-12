@@ -1,19 +1,30 @@
 ﻿using App.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace App.Data
 {
-    public class SetupTables {
+    public class SetupTables
+    {
         private readonly ModelBuilder mb;
 
         public SetupTables(ModelBuilder modelBuilder)
         {
-           
+
             this.mb = modelBuilder;
             SetupUrl();
             SetupBrowser();
             SetupPlataform();
             SetupMetric();
+            SetupUrlView();
+        }
+
+        private void SetupUrlView()
+        {
+            mb.Entity<UrlView>(e => { 
+                e.ToView("UrlView"); 
+                e.HasNoKey(); }
+            );
         }
 
         private void SetupMetric()
@@ -29,7 +40,7 @@ namespace App.Data
         private void SetupPlataform()
         {
             mb.Entity<Plataform>(e => e.ToTable("Plataform"));
-            mb.Entity<Plataform>().Property(e => e.Id).UseIdentityColumn(1,1);
+            mb.Entity<Plataform>().Property(e => e.Id).UseIdentityColumn(1, 1);
             mb.Entity<Plataform>().HasKey(e => e.Id);
 
             mb.Entity<Plataform>().Property(e => e.Name).HasMaxLength(20).IsRequired();
