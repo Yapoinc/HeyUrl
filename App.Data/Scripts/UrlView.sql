@@ -11,6 +11,6 @@
 									u.ShortUrl, 
 									u.OriginalUrl,
 									u.DateCreated,
-									ug.Clicks
+									ISNULL(ug.Clicks,0) Clicks
 								FROM Url u 
-								INNER JOIN urlGroup ug ON ug.UrlId=u.Id
+								LEFT JOIN urlGroup ug ON ug.UrlId=u.Id

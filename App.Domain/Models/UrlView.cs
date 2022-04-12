@@ -8,7 +8,7 @@ namespace App.Domain.Models
 {
     public class UrlView
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ShortUrl { get; set; }
         public string OriginalUrl { get; set; }
         public DateTime DateCreated { get; set; }

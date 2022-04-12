@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using App.Data;
 using App.Domain.Models;
 using App.Domain.ViewModels;
+using App.Library;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shyjus.BrowserDetection;
@@ -14,72 +17,52 @@ namespace HeyUrlChallengeCodeDotnet.Controllers
         private readonly ILogger<UrlsController> _logger;
         private static readonly Random getrandom = new Random();
         private readonly IBrowserDetector browserDetector;
+        private readonly UrlAction urlAction;
 
-        public UrlsController(ILogger<UrlsController> logger, IBrowserDetector browserDetector)
+        public UrlsController(
+            ILogger<UrlsController> logger,
+            IBrowserDetector browserDetector, AppDbContext context)
         {
+            urlAction = new UrlAction(context);
             this.browserDetector = browserDetector;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var model = new HomeViewModel();
-            model.Urls = new List<Url>
-            {
-                new()
-                {
-                    ShortUrl = "ABCDE",
-                    Count = getrandom.Next(1, 10)
-                },
-                new()
-                {
-                    ShortUrl = "ABCDE",
-                    Count = getrandom.Next(1, 10)
-                },
-                new()
-                {
-                    ShortUrl = "ABCDE",
-                    Count = getrandom.Next(1, 10)
-                },
-            };
-            model.NewUrl = new();
+
+            var model = await urlAction.GetUrlView();
             return View(model);
         }
 
-        [Route("/{url}")]
-        public IActionResult Visit(string url) => new OkObjectResult($"{url}, {this.browserDetector.Browser.OS}, {this.browserDetector.Browser.Name}");
+        [Route("/{shortUrl}")]
+        public async Task<IActionResult> Visit(string shortUrl)
+        {
+            var url = await urlAction.RegisterVisit(shortUrl, this.browserDetector.Browser.Name, this.browserDetector.Browser.OS);
+            return Redirect(url.OriginalUrl);
+        }
+
+        [HttpPost]
+        [Route("urls/{CreateUrl}")]
+        public async Task<IActionResult> CreateUrl(Url newUrl)
+        {
+            var url = await urlAction.RegisterUrl(newUrl.OriginalUrl);
+            if (url is not null)
+                TempData["Notice"] = $"{newUrl.OriginalUrl} has been created!";
+            else
+                TempData["Notice"] = urlAction.GetError();
+            return Redirect("/");
+        }
+
 
         [Route("urls/{url}")]
-        public IActionResult Show(string url) => View(new ShowViewModel
+        public async Task<IActionResult> Show(string url)
         {
-            Url = new Url {ShortUrl = url, Count = getrandom.Next(1, 10)},
-            DailyClicks = new Dictionary<string, int>
-            {
-                {"1", 13},
-                {"2", 2},
-                {"3", 1},
-                {"4", 7},
-                {"5", 20},
-                {"6", 18},
-                {"7", 10},
-                {"8", 20},
-                {"9", 15},
-                {"10", 5}
-            },
-            BrowseClicks = new Dictionary<string, int>
-            {
-                { "IE", 13 },
-                { "Firefox", 22 },
-                { "Chrome", 17 },
-                { "Safari", 7 },
-            },
-            PlatformClicks = new Dictionary<string, int>
-            {
-                { "Windows", 13 },
-                { "macOS", 22 },
-                { "Ubuntu", 17 },
-                { "Other", 7 },
-            }
-        });
+            ShowViewModel showViewModel = await urlAction.GetData(url);
+            return View(showViewModel);
+
+
+        }
+       
     }
 }

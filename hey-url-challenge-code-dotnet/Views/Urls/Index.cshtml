@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="col m12">
-        <form asp-action="Create">
+        <form asp-action="CreateUrl" method="post">
             <div class="card">
                 <div class="card-content">
                     <div class="row">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="row">
                         <div class="col m6 offset-m2">
-                            <input type="text" class="validate form-control" placeholder="Your original URL here" />
+                            <input type="text" name="OriginalUrl" id="OriginalUrl" class="validate form-control" placeholder="Your original URL here" />
                         </div>
                         <div class="col m2">
                             <button type="submit" class="btn">Shorten URL</button>
@@ -43,13 +43,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var url in Model.Urls)
+        @foreach (var url in Model.UrlView)
         {
             <tr>
-                <th scope="row"><a href="https://localhost:5001/ABCDE">https://localhost:5001/ABCDE</a></th>
-                <td><a href="https://drive.google.com/file/d/1VdLgSSMojWFb1GRoBAFX_eXy7oX2J">drive.google.com/file/d/1VdLgSS...</a></td>
-                <td><!-- Please match the same format -->Feb 24, 2021</td>
-                <td>@url.Count</td>
+                <th scope="row"><a href="@url.ShortUrl">@url.ShortUrl</a></th>
+                <td><a>@url.OriginalUrl</a></td>
+                <td>@url.DateCreated.ToString("MMM dd, yyyy")</td>
+                <td>@url.Clicks</td>
                 <td>
                     <a href=@string.Format("/urls/{0}", url.ShortUrl)>
                         <svg class="octicon octicon-graph" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
